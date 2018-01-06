@@ -20,15 +20,12 @@ if [[ ! -d $deploy_dir ]]; then
   mkdir ${deploy_dir}
 fi
 
-deploy() {
-  echo $1 > "${deploy_path}"
-}
-
 if [[ ! -f "${env_dir}/KEYBASEPROOF_TEXT" && ! -f "${env_dir}/KEYBASEPROOF_URL" ]]; then
   echo 'Must set either KEYBASEPROOF_TEXT OR KEYBASEPROOF_URL' | indent
   exit 1
 fi
 
+# Try to deploy proof text stored as environment variable
 if [[ -f "${env_dir}/KEYBASEPROOF_TEXT" ]]; then
   cp "${env_dir}/KEYBASEPROOF_TEXT" "${deploy_path}"
   chmod 644 "${deploy_path}"
@@ -36,15 +33,17 @@ if [[ -f "${env_dir}/KEYBASEPROOF_TEXT" ]]; then
   exit 0
 fi
 
+# Deploy proof text from a URL
 url=$(cat "${env_dir}/KEYBASEPROOF_URL")
-text=$( curl --silent "${url}" )
+code=$( curl --silent --location --write-out "%{http_code}" --output keybase.txt "${url}" )
 
-if [[ $( echo $text | grep -c keybase.io ) -eq 0 ]]; then
+if [[ $code != 200 ]]; then
   echo "Failed to download keybase proof from ${url}" | indent
   exit 1
 fi
 
-deploy "${text}"
+cp keybase.txt "${deploy_path}"
+chmod 644 "${deploy_path}"
 echo "-----> Deployed ${url} to ${deploy_path}"
 exit 0
 

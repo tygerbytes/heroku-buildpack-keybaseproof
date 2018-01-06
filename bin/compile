@@ -4,6 +4,8 @@ indent() {
   sed -u 's/^/       /'
 }
 
+ls -l "${env_dir}"
+
 if [[ ! -f "${env_dir}/KEYBASEPROOF_DEPLOY_DIR" ]]; then
   echo 'KEYBASEPROOF_DEPLOY_DIR not set'
   exit 1

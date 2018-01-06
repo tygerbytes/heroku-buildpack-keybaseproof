@@ -10,6 +10,9 @@ deploy() {
   echo $1 > "${deploy_dir}/keybase.txt"
 }
 
+echo $KEYBASEPROOF_DEPLOY_DIR
+echo $KEYBASEPROOF_TEXT
+
 if [[ ! -d $deploy_dir ]]; then
   mkdir ${deploy_dir}
 fi

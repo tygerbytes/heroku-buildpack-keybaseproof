@@ -5,13 +5,14 @@ indent() {
 }
 
 env_dir=$3
+build_dir=$1
 
 if [[ ! -f "${env_dir}/KEYBASEPROOF_DEPLOY_DIR" ]]; then
   echo 'KEYBASEPROOF_DEPLOY_DIR not set'
   exit 1
 fi
 
-deploy_dir=$(cat "${env_dir}/KEYBASEPROOF_DEPLOY_DIR")
+deploy_dir=$(cat "${build_dir}/${env_dir}/KEYBASEPROOF_DEPLOY_DIR")
 
 if [[ ! -d $deploy_dir ]]; then
   mkdir ${deploy_dir}

@@ -14,13 +14,14 @@ fi
 
 deploy_dir=$(cat "${env_dir}/KEYBASEPROOF_DEPLOY_DIR")
 deploy_dir="${build_dir}/${deploy_dir}"
+deploy_path="${deploy_dir}/keybase.txt"
 
 if [[ ! -d $deploy_dir ]]; then
   mkdir ${deploy_dir}
 fi
 
 deploy() {
-  echo $1 > "${deploy_dir}/keybase.txt"
+  echo $1 > "${deploy_path}"
 }
 
 if [[ ! -f "${env_dir}/KEYBASEPROOF_TEXT" && ! -f "${env_dir}/KEYBASEPROOF_URL" ]]; then
@@ -29,9 +30,9 @@ if [[ ! -f "${env_dir}/KEYBASEPROOF_TEXT" && ! -f "${env_dir}/KEYBASEPROOF_URL" 
 fi
 
 if [[ -f "${env_dir}/KEYBASEPROOF_TEXT" ]]; then
-  text=$(cat "${env_dir}/KEYBASEPROOF_TEXT")
-  deploy "${text}"
-  echo "-----> Deployed KEYBASEPROOF_TEXT to ${deploy_dir}"
+  cp "${env_dir}/KEYBASEPROOF_TEXT" "${deploy_path}"
+  chmod 644 "${deploy_path}"
+  echo "-----> Deployed KEYBASEPROOF_TEXT to ${deploy_path}"
   exit 0
 fi
 
@@ -44,6 +45,6 @@ if [[ $( echo $text | grep -c keybase.io ) -eq 0 ]]; then
 fi
 
 deploy "${text}"
-echo "-----> Deployed ${url} to ${deploy_dir}"
+echo "-----> Deployed ${url} to ${deploy_path}"
 exit 0
 

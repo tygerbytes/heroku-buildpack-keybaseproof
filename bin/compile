@@ -30,6 +30,7 @@ fi
 
 if [[ -f "${env_dir}/KEYBASEPROOF_TEXT" ]]; then
   text=$(cat "${env_dir}/KEYBASEPROOF_TEXT")
+  echo $text
   deploy "${KEYBASEPROOF_TEXT}"
   echo "-----> Deployed KEYBASEPROOF_TEXT to ${deploy_dir}"
   exit 0

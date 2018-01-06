@@ -30,21 +30,20 @@ fi
 
 if [[ -f "${env_dir}/KEYBASEPROOF_TEXT" ]]; then
   text=$(cat "${env_dir}/KEYBASEPROOF_TEXT")
-  echo $text
-  deploy "${KEYBASEPROOF_TEXT}"
+  deploy "${text}"
   echo "-----> Deployed KEYBASEPROOF_TEXT to ${deploy_dir}"
   exit 0
 fi
 
 url=$(cat "${env_dir}/KEYBASEPROOF_URL")
-text=$( curl --silent "${KEYBASEPROOF_URL}" )
+text=$( curl --silent "${url}" )
 
 if [[ $( echo $text | grep -c keybase.io ) -eq 0 ]]; then
-  echo "Failed to download keybase proof from ${KEYBASEPROOF_URL}" | indent
+  echo "Failed to download keybase proof from ${url}" | indent
   exit 1
 fi
 
 deploy "${text}"
-echo "-----> Deployed ${KEYBASEPROOF_URL} to ${deploy_dir}"
+echo "-----> Deployed ${url} to ${deploy_dir}"
 exit 0
 

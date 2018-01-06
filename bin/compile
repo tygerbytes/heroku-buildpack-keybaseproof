@@ -4,30 +4,38 @@ indent() {
   sed -u 's/^/       /'
 }
 
-deploy_dir="${1}/$KEYBASEPROOF_DEPLOY_DIR"
+if [[ ! -f "${env_dir}/KEYBASEPROOF_DEPLOY_DIR" ]]; then
+  echo 'KEYBASEPROOF_DEPLOY_DIR not set'
+  exit 1
+fi
 
-deploy() {
-  echo $1 > "${deploy_dir}/keybase.txt"
-}
-
-echo $KEYBASEPROOF_DEPLOY_DIR
-echo $KEYBASEPROOF_TEXT
+deploy_dir=$(cat "${env_dir}/KEYBASEPROOF_DEPLOY_DIR")
 
 if [[ ! -d $deploy_dir ]]; then
   mkdir ${deploy_dir}
 fi
 
-if [[ ! -z $KEYBASEPROOF_TEXT ]]; then
+deploy() {
+  echo $1 > "${deploy_dir}/keybase.txt"
+}
+
+if [[ ! -f "${env_dir}/KEYBASEPROOF_TEXT" && ! -f "${env_dir}/KEYBASEPROOF_URL" ]]; then
+  echo 'Must set either KEYBASEPROOF_TEXT OR KEYBASEPROOF_URL' | indent
+  exit 1
+fi
+
+if [[ -f "${env_dir}/KEYBASEPROOF_TEXT" ]]; then
+  text=$(cat "${env_dir}/KEYBASEPROOF_TEXT")
   deploy "${KEYBASEPROOF_TEXT}"
   echo "-----> Deployed KEYBASEPROOF_TEXT to ${deploy_dir}"
   exit 0
 fi
 
-# KEYBASEPROOF_TEXT wasn't set; try the URL
+url=$(cat "${env_dir}/KEYBASEPROOF_URL")
 text=$( curl --silent "${KEYBASEPROOF_URL}" )
 
 if [[ $( echo $text | grep -c keybase.io ) -eq 0 ]]; then
-  echo "Failed to download keybase proof from ${KEYBASEPROOF_URL}"
+  echo "Failed to download keybase proof from ${KEYBASEPROOF_URL}" | indent
   exit 1
 fi
 

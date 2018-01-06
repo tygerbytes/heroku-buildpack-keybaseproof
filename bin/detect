@@ -1,14 +1,5 @@
 #!/usr/bin/env bash
 
-# if [[ -z $KEYBASEPROOF_DEPLOY_DIR ]]; then
-#   echo 'KEYBASEPROOF_DEPLOY_DIR not set'
-#   exit 1
-# fi
-# 
-# if [[ -z $KEYBASEPROOF_TEXT && -z $KEYBASEPROOF_URL ]]; then
-#   echo 'Must set either KEYBASEPROOF_TEXT OR KEYBASEPROOF_URL'
-#   exit 1
-# fi
-
+echo "KeybaseProof"
 exit 0
 

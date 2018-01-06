@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+indent() {
+  sed -u 's/^/       /'
+}
+
+deploy_dir="${1}/$KEYBASEPROOF_DEPLOY_DIR"
+
+deploy() {
+  echo $1 > "${deploy_dir}/keybase.txt"
+}
+
+if [[ ! -d $deploy_dir ]]; then
+  mkdir ${deploy_dir}
+fi
+
+if [[ ! -z $KEYBASEPROOF_TEXT ]]; then
+  deploy "${KEYBASEPROOF_TEXT}"
+  echo "-----> Deployed KEYBASEPROOF_TEXT to ${deploy_dir}"
+  exit 0
+fi
+
+# KEYBASEPROOF_TEXT wasn't set; try the URL
+text=$( curl --silent "${KEYBASEPROOF_URL}" )
+
+if [[ $( echo $text | grep -c keybase.io ) -eq 0 ]]; then
+  echo "Failed to download keybase proof from ${KEYBASEPROOF_URL}"
+  exit 1
+fi
+
+deploy "${text}"
+echo "-----> Deployed ${KEYBASEPROOF_URL} to ${deploy_dir}"
+exit 0
+

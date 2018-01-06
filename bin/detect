@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-echo "KeybaseProof"
+echo "keybaseproof"
 exit 0
 

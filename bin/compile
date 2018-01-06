@@ -8,7 +8,7 @@ env_dir=$3
 build_dir=$1
 
 if [[ ! -f "${env_dir}/KEYBASEPROOF_DEPLOY_DIR" ]]; then
-  echo 'KEYBASEPROOF_DEPLOY_DIR not set'
+  echo 'KEYBASEPROOF_DEPLOY_DIR not set' | indent
   exit 1
 fi
 
@@ -17,7 +17,7 @@ deploy_dir="${build_dir}/${deploy_dir}"
 deploy_path="${deploy_dir}/keybase.txt"
 
 if [[ ! -d $deploy_dir ]]; then
-  mkdir ${deploy_dir}
+  mkdir --parents "${deploy_dir}"
 fi
 
 if [[ ! -f "${env_dir}/KEYBASEPROOF_TEXT" && ! -f "${env_dir}/KEYBASEPROOF_URL" ]]; then

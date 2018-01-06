@@ -12,7 +12,8 @@ if [[ ! -f "${env_dir}/KEYBASEPROOF_DEPLOY_DIR" ]]; then
   exit 1
 fi
 
-deploy_dir=$(cat "${build_dir}/${env_dir}/KEYBASEPROOF_DEPLOY_DIR")
+deploy_dir=$(cat "${env_dir}/KEYBASEPROOF_DEPLOY_DIR")
+deploy_dir="${build_dir}/${deploy_dir}"
 
 if [[ ! -d $deploy_dir ]]; then
   mkdir ${deploy_dir}

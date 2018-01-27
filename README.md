@@ -1,6 +1,6 @@
 # Heroku Buildpack: keybaseproof
 
-This buildpack enables deploying a keybase proof to an arbitary directory from either a URL or a Heroku config variable.
+This buildpack enables deploying a keybase proof to an arbitrary directory from either a URL or a Heroku config variable.
 
 ## Description
 You want to deploy your Keybase proof to your Heroku-powered website, but you don't want to store the proof along with your Git repo. Just add this buildpack to your project and a few config vars and you're set.
